@@ -22,8 +22,8 @@ export default function RegisterPage() {
       return
     }
     setFieldError(null)
-    await submit({ nombre, email, password, confirmPassword })
-    if (!error) navigate('/')
+    const ok = await submit({ nombre, email, password, confirmPassword })
+    if (ok) navigate('/')
   }
 
   return (
@@ -41,15 +41,15 @@ export default function RegisterPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+              <Input id="email" type="email" autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} required />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Contraseña</Label>
-              <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} />
+              <Input id="password" type="password" autoComplete="new-password" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirmar Contraseña</Label>
-              <Input id="confirmPassword" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
+              <Input id="confirmPassword" type="password" autoComplete="new-password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
             </div>
             {(fieldError || error) && <p className="text-sm text-destructive">{fieldError ?? error}</p>}
             <Button type="submit" className="w-full" disabled={loading}>

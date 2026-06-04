@@ -14,8 +14,8 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await submit({ email, password })
-    if (!error) navigate('/')
+    const ok = await submit({ email, password })
+    if (ok) navigate('/')
   }
 
   return (
@@ -29,11 +29,11 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+              <Input id="email" type="email" autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} required />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Contraseña</Label>
-              <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+              <Input id="password" type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} required />
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
             <Button type="submit" className="w-full" disabled={loading}>
@@ -48,7 +48,7 @@ export default function LoginPage() {
           </div>
           <div className="mt-2 text-center">
             <a
-              href="/oauth2/authorization/google"
+              href="http://localhost:8080/oauth2/authorization/google"
               className="text-sm text-primary underline underline-offset-4"
             >
               Continuar con Google

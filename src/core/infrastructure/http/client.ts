@@ -13,6 +13,12 @@ export class HttpClient {
     return localStorage.getItem('auth_token')
   }
 
+  private handleUnauthorized(): void {
+    localStorage.removeItem('auth_token')
+    localStorage.removeItem('auth_user')
+    window.location.href = '/auth/login'
+  }
+
   private async request<T>(
     method: string,
     path: string,
@@ -41,19 +47,26 @@ export class HttpClient {
       method,
       headers,
       body: body instanceof FormData ? body : body ? JSON.stringify(body) : undefined,
+      redirect: 'manual',
     })
+
+    if (res.type === 'opaqueredirect') {
+      this.handleUnauthorized()
+      throw { status: 401, body: { error: 'Sesión expirada. Inicia sesión de nuevo.' } } as ApiHttpError
+    }
 
     if (res.status === 204) {
       return undefined as T
     }
 
+    if (res.status === 401) {
+      this.handleUnauthorized()
+      const errorBody = await res.json().catch(() => ({ error: 'No autorizado' }))
+      throw { status: 401, body: errorBody } as ApiHttpError
+    }
+
     if (!res.ok) {
       const errorBody = await res.json().catch(() => ({ error: res.statusText }))
-      if (res.status === 401) {
-        localStorage.removeItem('auth_token')
-        localStorage.removeItem('auth_user')
-        window.location.href = '/auth/login'
-      }
       throw { status: res.status, body: errorBody } as ApiHttpError
     }
 

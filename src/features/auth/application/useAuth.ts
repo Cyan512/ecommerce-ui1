@@ -16,14 +16,16 @@ export function useLogin() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const submit = async (form: LoginForm) => {
+  const submit = async (form: LoginForm): Promise<boolean> => {
     setLoading(true)
     setError(null)
     try {
       const res = await authService.login(form)
       login(res)
+      return true
     } catch (e: unknown) {
       setError(getErrorMessage(e))
+      return false
     } finally {
       setLoading(false)
     }
@@ -37,7 +39,7 @@ export function useRegister() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const submit = async (form: RegisterForm) => {
+  const submit = async (form: RegisterForm): Promise<boolean> => {
     setLoading(true)
     setError(null)
     try {
@@ -47,8 +49,10 @@ export function useRegister() {
         nombre: form.nombre,
       })
       login(res)
+      return true
     } catch (e: unknown) {
       setError(getErrorMessage(e))
+      return false
     } finally {
       setLoading(false)
     }

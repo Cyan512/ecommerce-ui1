@@ -18,6 +18,8 @@ import AdminProductFormPage from '@/features/products/infrastructure/pages/Admin
 import AdminCategoryListPage from '@/features/categories/infrastructure/pages/AdminCategoryListPage'
 import AdminCategoryFormPage from '@/features/categories/infrastructure/pages/AdminCategoryFormPage'
 import AdminOrderListPage from '@/features/orders/infrastructure/pages/AdminOrderListPage'
+import AdminDashboardPage from '@/features/admin/infrastructure/pages/DashboardPage'
+import { ClientGuard } from '@/core/infrastructure/auth/ClientGuard'
 
 function App() {
   return (
@@ -34,15 +36,17 @@ function App() {
             <Route path="/" element={<Navigate to="/products" replace />} />
             <Route path="/products" element={<ProductListPage />} />
             <Route path="/products/:id" element={<ProductDetailPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/wishlist" element={<WishlistPage />} />
-            <Route path="/orders" element={<MyOrdersPage />} />
-            <Route path="/orders/:id" element={<OrderDetailPage />} />
-            <Route path="/direcciones" element={<DireccionesPage />} />
+            <Route element={<ClientGuard />}>
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/wishlist" element={<WishlistPage />} />
+              <Route path="/orders" element={<MyOrdersPage />} />
+              <Route path="/orders/:id" element={<OrderDetailPage />} />
+              <Route path="/direcciones" element={<DireccionesPage />} />
+            </Route>
           </Route>
 
           <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Navigate to="/admin/products" replace />} />
+            <Route index element={<AdminDashboardPage />} />
             <Route path="products" element={<AdminProductListPage />} />
             <Route path="products/new" element={<AdminProductFormPage />} />
             <Route path="products/:id/edit" element={<AdminProductFormPage />} />

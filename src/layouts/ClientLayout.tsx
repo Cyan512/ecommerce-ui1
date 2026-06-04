@@ -3,7 +3,7 @@ import { useAuth } from '@/core/infrastructure/auth/useAuth'
 import { Button } from '@/components/ui/button'
 
 export default function ClientLayout() {
-  const { isAuthenticated, user, logout, isAdmin } = useAuth()
+  const { isAuthenticated, isClient, user, logout, isAdmin } = useAuth()
   const navigate = useNavigate()
 
   return (
@@ -17,7 +17,7 @@ export default function ClientLayout() {
             <Link to="/products" className="text-sm font-medium hover:underline underline-offset-4">
               Productos
             </Link>
-            {isAuthenticated && (
+            {isClient && (
               <>
                 <Link to="/cart" className="text-sm font-medium hover:underline underline-offset-4">
                   Carrito
@@ -28,18 +28,34 @@ export default function ClientLayout() {
                 <Link to="/orders" className="text-sm font-medium hover:underline underline-offset-4">
                   Pedidos
                 </Link>
-                {isAdmin && (
-                  <Link to="/admin/products" className="text-sm font-medium text-primary hover:underline underline-offset-4">
-                    Admin
-                  </Link>
-                )}
+                <Link to="/direcciones" className="text-sm font-medium hover:underline underline-offset-4">
+                  Direcciones
+                </Link>
               </>
             )}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="inline-flex items-center gap-1 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+              >
+                Admin
+              </Link>
+            )}
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {isAuthenticated ? (
               <>
-                <span className="text-sm text-muted-foreground">{user?.nombre}</span>
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                    {user?.nombre.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="hidden flex-col sm:flex">
+                    <span className="text-sm font-medium leading-tight">{user?.nombre}</span>
+                    <span className="text-[10px] leading-tight text-muted-foreground">
+                      {user?.tipo === 'ADMINISTRADOR' ? 'Admin' : user?.tipo === 'VENDEDOR' ? 'Staff' : 'Cliente'}
+                    </span>
+                  </div>
+                </div>
                 <Button variant="outline" size="sm" onClick={() => { logout(); navigate('/auth/login') }}>
                   Cerrar sesión
                 </Button>
