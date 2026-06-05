@@ -6,12 +6,14 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { productService } from '../ProductService'
 import { useAdminProducts } from '../../application/useProducts'
+import { useCategories } from '@/features/categories/application/useCategories'
 
 export default function AdminProductFormPage() {
   const { id } = useParams()
   const isEdit = !!id
   const navigate = useNavigate()
   const { create, update } = useAdminProducts()
+  const { categories } = useCategories()
   const [nombre, setNombre] = useState('')
   const [descripcion, setDescripcion] = useState('')
   const [precio, setPrecio] = useState('')
@@ -77,8 +79,14 @@ export default function AdminProductFormPage() {
             <Input id="stock" type="number" min="0" value={stock} onChange={e => setStock(e.target.value)} required />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="categoriaId">ID de Categoría</Label>
-            <Input id="categoriaId" value={categoriaId} onChange={e => setCategoriaId(e.target.value)} placeholder="UUID" />
+            <Label htmlFor="categoriaId">Categoría</Label>
+            <select id="categoriaId" value={categoriaId} onChange={e => setCategoriaId(e.target.value)}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+              <option value="">Sin categoría</option>
+              {categories.map(cat => (
+                <option key={cat.id} value={cat.id}>{cat.nombre}</option>
+              ))}
+            </select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="imagenUrl">URL de imagen</Label>

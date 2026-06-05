@@ -5,7 +5,7 @@ import { useAdminOrders } from '../../application/useOrders'
 const ESTADOS = ['PENDIENTE', 'CONFIRMADO', 'ENVIADO', 'ENTREGADO', 'CANCELADO']
 
 export default function AdminOrderListPage() {
-  const { orders, loading, updateStatus } = useAdminOrders()
+  const { orders, loading, error, updateStatus } = useAdminOrders()
   const [updating, setUpdating] = useState<string | null>(null)
 
   const handleStatusChange = async (id: string, estado: string) => {
@@ -15,6 +15,16 @@ export default function AdminOrderListPage() {
   }
 
   if (loading) return <p>Cargando pedidos...</p>
+  if (error) return <p className="text-destructive">{error}</p>
+
+  if (orders.length === 0) {
+    return (
+      <Card>
+        <CardHeader><CardTitle>Gestión de Pedidos</CardTitle></CardHeader>
+        <CardContent><p className="text-muted-foreground">No hay pedidos registrados.</p></CardContent>
+      </Card>
+    )
+  }
 
   return (
     <Card>

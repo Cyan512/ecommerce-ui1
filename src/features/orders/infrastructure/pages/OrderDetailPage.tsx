@@ -26,7 +26,7 @@ export default function OrderDetailPage() {
 
           <div className="space-y-2">
             <h3 className="font-medium">Items</h3>
-            {order.items.map((item, i) => (
+            {(order.items ?? []).map((item, i) => (
               <div key={i} className="flex justify-between border-b pb-2 text-sm">
                 <span>{item.productoNombre} x{item.cantidad}</span>
                 <span>${item.subtotal.toFixed(2)}</span>
@@ -35,9 +35,11 @@ export default function OrderDetailPage() {
           </div>
 
           <div className="space-y-1 border-t pt-4 text-sm">
-            <div className="flex justify-between"><span>Subtotal</span><span>${order.subtotal.toFixed(2)}</span></div>
-            {order.descuento > 0 && (
-              <div className="flex justify-between"><span>Descuento</span><span>-${order.descuento.toFixed(2)}</span></div>
+            {order.subtotal !== undefined && (
+              <div className="flex justify-between"><span>Subtotal</span><span>${order.subtotal.toFixed(2)}</span></div>
+            )}
+            {(order.descuento ?? 0) > 0 && (
+              <div className="flex justify-between"><span>Descuento</span><span>-${order.descuento!.toFixed(2)}</span></div>
             )}
             <div className="flex justify-between text-lg font-bold"><span>Total</span><span>${order.total.toFixed(2)}</span></div>
           </div>

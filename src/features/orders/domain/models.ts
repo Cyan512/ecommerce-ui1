@@ -10,10 +10,10 @@ export interface Pedido {
   id: string
   estado: string
   total: number
-  descuento: number
-  subtotal: number
+  descuento?: number
+  subtotal?: number
   fechaCreacion: string
-  items: PedidoItem[]
+  items?: PedidoItem[]
 }
 
 export interface CreatePedidoRequest {
