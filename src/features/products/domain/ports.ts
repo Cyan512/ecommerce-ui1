@@ -7,4 +7,5 @@ export interface ProductRepository {
   create(data: ProductoRequest): Promise<Producto>
   update(id: string, data: ProductoRequest): Promise<Producto>
   delete(id: string): Promise<void>
+  uploadImage(id: string, file: File): Promise<Producto>
 }

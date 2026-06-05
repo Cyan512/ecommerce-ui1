@@ -20,6 +20,8 @@ export default function AdminProductFormPage() {
   const [stock, setStock] = useState('')
   const [categoriaId, setCategoriaId] = useState('')
   const [imagenUrl, setImagenUrl] = useState('')
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [uploading, setUploading] = useState(false)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -35,6 +37,21 @@ export default function AdminProductFormPage() {
     }
   }, [id, isEdit])
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (isEdit) {
+      setUploading(true)
+      productService.uploadImage(id!, file).then(updated => {
+        setImagenUrl(updated.imagenUrl ?? '')
+      }).finally(() => {
+        setUploading(false)
+      })
+    } else {
+      setSelectedFile(file)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -48,11 +65,16 @@ export default function AdminProductFormPage() {
     }
     if (isEdit) {
       await update(id!, data)
+      setLoading(false)
+      navigate('/admin/products')
     } else {
-      await create(data)
+      const created = await create(data)
+      if (selectedFile) {
+        await productService.uploadImage(created.id, selectedFile)
+      }
+      setLoading(false)
+      navigate('/admin/products')
     }
-    setLoading(false)
-    navigate('/admin/products')
   }
 
   return (
@@ -91,6 +113,14 @@ export default function AdminProductFormPage() {
           <div className="space-y-2">
             <Label htmlFor="imagenUrl">URL de imagen</Label>
             <Input id="imagenUrl" type="url" value={imagenUrl} onChange={e => setImagenUrl(e.target.value)} />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="imageFile">Subir imagen</Label>
+            <div className="flex items-center gap-2">
+              <Input id="imageFile" type="file" accept="image/*" onChange={handleFileChange} disabled={uploading} />
+              {uploading && <span className="text-sm text-muted-foreground">Subiendo...</span>}
+              {!isEdit && selectedFile && <span className="text-sm text-muted-foreground">{selectedFile.name}</span>}
+            </div>
           </div>
           <div className="flex gap-2">
             <Button type="submit" disabled={loading}>{loading ? 'Guardando...' : 'Guardar'}</Button>

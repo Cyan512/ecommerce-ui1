@@ -65,9 +65,10 @@ export function useProductsByCategory(categoriaId: string) {
 export function useAdminProducts() {
   const { products, loading, error, refetch } = useProducts()
 
-  const create = async (data: ProductoRequest) => {
-    await productService.create(data)
+  const create = async (data: ProductoRequest): Promise<Producto> => {
+    const created = await productService.create(data)
     await refetch()
+    return created
   }
 
   const update = async (id: string, data: ProductoRequest) => {

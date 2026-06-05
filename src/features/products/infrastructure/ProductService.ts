@@ -26,6 +26,12 @@ class ProductService implements ProductRepository {
   delete(id: string): Promise<void> {
     return http.delete(`/api/admin/products/${id}`)
   }
+
+  uploadImage(id: string, file: File): Promise<Producto> {
+    const formData = new FormData()
+    formData.append('file', file)
+    return http.upload<Producto>(`/api/admin/products/${id}/image`, formData)
+  }
 }
 
 export const productService = new ProductService()

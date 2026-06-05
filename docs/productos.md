@@ -140,6 +140,33 @@ Desactivar un producto (borrado lógico: `activo = false`).
 
 ---
 
+### `POST /api/admin/products/{id}/image`
+
+Subir una imagen para un producto. La imagen se sube a **Cloudinary** y la URL se guarda automáticamente en `imagenUrl`.
+
+**Headers:**
+```
+Authorization: Bearer <token>
+Content-Type: multipart/form-data
+```
+
+**Body (form-data):**
+| Campo | Tipo | Requerido |
+|---|---|---|
+| `file` | archivo (imagen) | ✅ (máx. 5 MB) |
+
+**Respuesta — `200 OK`:**
+```json
+{
+  "id": "6b9b06bd-...",
+  "nombre": "Producto Test",
+  "imagenUrl": "http://res.cloudinary.com/ds0tjwccs/image/upload/v123456/abc.png",
+  ...
+}
+```
+
+---
+
 ## Endpoints — Reseñas
 
 ### `GET /api/reviews/product/{productoId}`
@@ -277,6 +304,11 @@ curl -X POST http://localhost:8080/api/admin/products \
   -H "Authorization: Bearer $ADM_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"nombre":"Laptop","descripcion":"Laptop gamer","precio":25000,"stock":10,"categoriaId":"CAT_ID"}'
+
+# Subir imagen a Cloudinary
+curl -X POST http://localhost:8080/api/admin/products/PROD_ID/image \
+  -H "Authorization: Bearer $ADM_TOKEN" \
+  -F "file=@/ruta/de/imagen.jpg"
 
 # Login cliente
 CLI_TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login \

@@ -88,6 +88,10 @@ export class HttpClient {
   delete<T = void>(path: string): Promise<T> {
     return this.request<T>('DELETE', path)
   }
+
+  upload<T>(path: string, formData: FormData): Promise<T> {
+    return this.request<T>('POST', path, formData)
+  }
 }
 
 export const http = new HttpClient()
