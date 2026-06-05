@@ -121,6 +121,7 @@ Crear un pedido. Reduce el stock de los productos automáticamente.
 ```json
 {
   "id": "b2f09df0-...",
+  "usuarioEmail": "comprador@test.com",
   "estado": "PENDIENTE",
   "total": 22500.00,
   "fechaCreacion": "2026-06-04T17:22:11",
@@ -151,6 +152,7 @@ Obtener los pedidos del usuario autenticado.
 [
   {
     "id": "b2f09df0-...",
+    "usuarioEmail": "comprador@test.com",
     "estado": "PENDIENTE",
     "total": 22500.00,
     "fechaCreacion": "2026-06-04T17:22:11",
@@ -178,9 +180,31 @@ Requieren rol `ADMINISTRADOR`.
 
 ### `GET /api/admin/orders`
 
-Listar todos los pedidos.
+Listar todos los pedidos del sistema, incluyendo el email del cliente.
 
-**Respuesta — `200 OK`:** array de pedidos.
+**Respuesta — `200 OK`:**
+```json
+[
+  {
+    "id": "b2f09df0-...",
+    "usuarioEmail": "cliente@example.com",
+    "estado": "PENDIENTE",
+    "total": 22500.00,
+    "fechaCreacion": "2026-06-04T17:22:11",
+    "items": [
+      {
+        "productoId": "f584f911-...",
+        "productoNombre": "Laptop Gamer",
+        "cantidad": 1,
+        "precioUnitario": 25000.00,
+        "subtotal": 25000.00
+      }
+    ]
+  }
+]
+```
+
+> `usuarioEmail` será `null` si el usuario fue eliminado.
 
 ---
 
@@ -244,6 +268,7 @@ Consultar un cupón por código.
 ```json
 {
   "id": "UUID",
+  "usuarioEmail": "string | null",
   "estado": "string",
   "total": "number",
   "fechaCreacion": "datetime",

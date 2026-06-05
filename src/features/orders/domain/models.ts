@@ -8,6 +8,7 @@ export interface PedidoItem {
 
 export interface Pedido {
   id: string
+  usuarioEmail?: string | null
   estado: string
   total: number
   descuento?: number

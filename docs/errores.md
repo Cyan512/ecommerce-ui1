@@ -31,7 +31,7 @@ Para errores de validación, se incluye el campo específico:
 | `400` | Bad Request | Validación fallida, credenciales inválidas, error de negocio |
 | `302` | Redirect | Falta autenticación (redirecciona a OAuth2 Google) |
 | `404` | Not Found | Recurso no encontrado |
-| `409` | Conflict | Email duplicado, reseña duplicada, cupón agotado |
+| `409` | Conflict | Email duplicado, reseña duplicada, cupón agotado, eliminar usuario con pedidos, eliminar admin por defecto |
 | `500` | Internal Server Error | Error inesperado |
 
 ---
@@ -88,6 +88,14 @@ Para errores de validación, se incluye el campo específico:
 // DELETE /api/admin/users/{id} — admin por defecto
 {
   "error": "No se puede eliminar la cuenta administradora por defecto"
+}
+```
+
+### Usuario con pedidos
+```json
+// DELETE /api/admin/users/{id} — usuario tiene pedidos
+{
+  "error": "No se puede eliminar el usuario porque tiene pedidos asociados. Bloquéelo en su lugar."
 }
 ```
 

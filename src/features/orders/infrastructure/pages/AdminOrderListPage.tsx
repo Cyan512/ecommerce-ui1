@@ -36,6 +36,7 @@ export default function AdminOrderListPage() {
           <thead>
             <tr className="border-b text-left">
               <th className="pb-2 font-medium">ID</th>
+              <th className="pb-2 font-medium">Cliente</th>
               <th className="pb-2 font-medium">Fecha</th>
               <th className="pb-2 font-medium">Total</th>
               <th className="pb-2 font-medium">Estado</th>
@@ -46,6 +47,7 @@ export default function AdminOrderListPage() {
             {orders.map(order => (
               <tr key={order.id} className="border-b last:border-0">
                 <td className="py-2 font-mono text-xs">{order.id.slice(0, 8)}</td>
+                <td className="py-2 text-xs">{order.usuarioEmail ?? '—'}</td>
                 <td className="py-2">{new Date(order.fechaCreacion).toLocaleDateString()}</td>
                 <td className="py-2">${order.total.toFixed(2)}</td>
                 <td className="py-2">

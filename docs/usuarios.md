@@ -350,6 +350,7 @@ Eliminar un usuario permanentemente.
 
 **Errores:**
 - `409` — no se puede eliminar la cuenta administradora por defecto (`admin@ecommerce.com`)
+- `409` — el usuario tiene pedidos asociados (bloquear en su lugar)
 
 ---
 
