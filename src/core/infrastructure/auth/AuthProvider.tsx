@@ -30,6 +30,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
   }, [])
 
+  const updateUser = useCallback((u: { email: string; nombre: string; tipo: string }) => {
+    localStorage.setItem('auth_user', JSON.stringify(u))
+    setUser(u)
+  }, [])
+
   const value = {
     user,
     token,
@@ -38,6 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isClient: user?.tipo === 'CLIENTE',
     login,
     logout,
+    updateUser,
   }
 
   return <AuthContext value={value}>{children}</AuthContext>

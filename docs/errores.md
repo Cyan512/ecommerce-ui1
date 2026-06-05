@@ -84,6 +84,13 @@ Para errores de validación, se incluye el campo específico:
 }
 ```
 
+```json
+// DELETE /api/admin/users/{id} — admin por defecto
+{
+  "error": "No se puede eliminar la cuenta administradora por defecto"
+}
+```
+
 ### Error de autenticación/autorización
 ```json
 // POST /api/auth/login — credenciales incorrectas

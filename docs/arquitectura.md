@@ -206,6 +206,14 @@ PostgreSQL
 | POST | `/api/wishlist/items` | CLIENT | Agregar producto |
 | DELETE | `/api/wishlist/items/{id}` | CLIENT | Eliminar item |
 
+### Perfil de Usuario
+
+| Método | Ruta | Auth | Descripción |
+|---|---|---|---|
+| GET | `/api/profile` | Authenticated | Perfil del usuario autenticado |
+| PUT | `/api/profile/password` | Authenticated | Cambiar contraseña |
+| PUT | `/api/profile/nombre` | Authenticated | Cambiar nombre |
+
 ### Direcciones
 
 | Método | Ruta | Auth | Descripción |
@@ -220,12 +228,22 @@ PostgreSQL
 |---|---|---|---|
 | GET | `/api/coupons/{codigo}` | — | Consultar cupón |
 
-### Admin
+### Admin — Órdenes
 
 | Método | Ruta | Auth | Descripción |
 |---|---|---|---|
 | GET | `/api/admin/orders` | ADMIN | Todos los pedidos |
 | PUT | `/api/admin/orders/{id}/status` | ADMIN | Cambiar estado pedido |
+
+### Admin — Usuarios
+
+| Método | Ruta | Auth | Descripción |
+|---|---|---|---|
+| GET | `/api/admin/users` | ADMIN | Listar todos los usuarios |
+| POST | `/api/admin/users` | ADMIN | Crear usuario (CLIENTE/VENDEDOR/ADMINISTRADOR) |
+| PUT | `/api/admin/users/{id}/block` | ADMIN | Bloquear usuario |
+| PUT | `/api/admin/users/{id}/unblock` | ADMIN | Desbloquear usuario |
+| DELETE | `/api/admin/users/{id}` | ADMIN | Eliminar usuario |
 
 ---
 
@@ -268,6 +286,19 @@ PostgreSQL
 
 ---
 
+## Componentes de Sistema
+
+### DataInitializer
+- `config/DataInitializer.java` — `ApplicationRunner` que crea el admin por defecto al primer inicio (base vacía).
+- Configurable vía `DEFAULT_ADMIN_EMAIL`, `DEFAULT_ADMIN_PASSWORD`, `DEFAULT_ADMIN_NAME`.
+- Cuenta protegida contra eliminación (validada por email).
+
+### EnvConfig
+- `config/EnvConfig.java` — Carga las variables del archivo `.env` en la raíz del proyecto usando `PropertySourcesPlaceholderConfigurer`.
+- Permite ejecutar la app sin pasar variables de entorno en el comando.
+
+---
+
 ## Estado del Proyecto
 
-API completamente implementada con 14 tablas en PostgreSQL, autenticación JWT + OAuth2, CRUD completo de productos/categorías/pedidos, carrito, wishlist, reseñas, direcciones, cupones y role-based access control.
+API completamente implementada con 14 tablas en PostgreSQL, autenticación JWT + OAuth2, CRUD completo de productos/categorías/pedidos/usuarios, carrito, wishlist, reseñas, direcciones, cupones, perfil de usuario, admin seed automático y role-based access control.

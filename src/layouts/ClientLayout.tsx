@@ -56,6 +56,9 @@ export default function ClientLayout() {
                     </span>
                   </div>
                 </div>
+                <Link to="/profile" className="text-xs text-muted-foreground hover:underline underline-offset-4">
+                  Perfil
+                </Link>
                 <Button variant="outline" size="sm" onClick={() => { logout(); navigate('/auth/login') }}>
                   Cerrar sesión
                 </Button>

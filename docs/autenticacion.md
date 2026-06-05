@@ -143,15 +143,19 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9...
 http://localhost:8080/login/oauth2/code/google
 ```
 
-**Variables de entorno obligatorias:**
+## Archivo `.env`
+
+Todas las variables de entorno se pueden configurar en un archivo `.env` en la raíz del proyecto (se carga automáticamente vía `PropertySourcesPlaceholderConfigurer`).
+
+**Variables obligatorias:**
 ```
 OAUTH2_CLIENT_ID=xxxxx.apps.googleusercontent.com
 OAUTH2_CLIENT_SECRET=GOCSPX-xxxxx
-JWT_SECRET=base64-256bit-key
+JWT_SECRET=<base64-256bit-key>
 FRONTEND_URL=http://localhost:4200
 ```
 
-**Variables de entorno opcionales:**
+**Variables opcionales:**
 ```
 SERVER_PORT=8080
 DB_HOST=localhost
@@ -162,6 +166,9 @@ DB_PASSWORD=postgres
 JPA_DDL_AUTO=update
 JPA_SHOW_SQL=true
 JWT_EXPIRATION=86400000
+DEFAULT_ADMIN_EMAIL=admin@ecommerce.com
+DEFAULT_ADMIN_PASSWORD=Admin123!
+DEFAULT_ADMIN_NAME=Administrador
 SPRINGDOC_API_TITLE=Ecommerce API
 SPRINGDOC_API_DESCRIPTION=API REST de e-commerce
 SPRINGDOC_API_VERSION=0.0.1

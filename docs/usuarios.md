@@ -144,6 +144,215 @@ Authorization: Bearer <token>
 
 ---
 
+## Endpoints — Perfil del Usuario Autenticado
+
+Requieren JWT válido (cualquier rol).
+
+### `GET /api/profile`
+
+Obtener perfil del usuario autenticado.
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Respuesta — `200 OK`:**
+```json
+{
+  "id": "95a071a7-...",
+  "email": "admin@ecommerce.com",
+  "nombre": "Administrador",
+  "tipo": "ADMINISTRADOR",
+  "activo": true
+}
+```
+
+---
+
+### `PUT /api/profile/password`
+
+Cambiar la contraseña del usuario autenticado.
+
+**Headers:**
+```
+Authorization: Bearer <token>
+Content-Type: application/json
+```
+
+**Body:**
+```json
+{
+  "currentPassword": "Admin123!",
+  "newPassword": "NuevaPass123!"
+}
+```
+
+| Campo | Tipo | Requerido |
+|---|---|---|
+| `currentPassword` | string | ✅ |
+| `newPassword` | string | ✅ |
+
+**Respuesta — `200 OK`:**
+```json
+{
+  "message": "Contraseña actualizada correctamente"
+}
+```
+
+**Errores:**
+- `400` — currentPassword incorrecta
+
+---
+
+### `PUT /api/profile/nombre`
+
+Cambiar el nombre del usuario autenticado.
+
+**Headers:**
+```
+Authorization: Bearer <token>
+Content-Type: application/json
+```
+
+**Body:**
+```json
+{
+  "nombre": "Nuevo Nombre"
+}
+```
+
+**Respuesta — `200 OK`:**
+```json
+{
+  "id": "95a071a7-...",
+  "email": "admin@ecommerce.com",
+  "nombre": "Nuevo Nombre",
+  "tipo": "ADMINISTRADOR",
+  "activo": true
+}
+```
+
+---
+
+## Endpoints — Admin Usuarios
+
+Requieren rol `ADMINISTRADOR`.
+
+### `GET /api/admin/users`
+
+Listar todos los usuarios del sistema.
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Respuesta — `200 OK`:**
+```json
+[
+  {
+    "id": "ce4e2cc2-...",
+    "email": "admin@ecommerce.com",
+    "nombre": "Administrador",
+    "tipo": "ADMINISTRADOR",
+    "activo": true
+  },
+  {
+    "id": "5fb89bb6-...",
+    "email": "vendedor@test.com",
+    "nombre": "Vendedor Uno",
+    "tipo": "VENDEDOR",
+    "activo": true
+  }
+]
+```
+
+---
+
+### `POST /api/admin/users`
+
+Crear un usuario con el tipo especificado.
+
+**Body:**
+```json
+{
+  "email": "vendedor@test.com",
+  "password": "Vendedor123",
+  "nombre": "Vendedor Uno",
+  "tipo": "VENDEDOR"
+}
+```
+
+| Campo | Tipo | Requerido |
+|---|---|---|
+| `email` | string | ✅ |
+| `password` | string | ✅ (mín. 6 caracteres) |
+| `nombre` | string | ✅ |
+| `tipo` | string | ✅ (CLIENTE, VENDEDOR, ADMINISTRADOR) |
+
+**Respuesta — `201 Created`:**
+```json
+{
+  "id": "5fb89bb6-...",
+  "email": "vendedor@test.com",
+  "nombre": "Vendedor Uno",
+  "tipo": "VENDEDOR",
+  "activo": true
+}
+```
+
+**Errores:**
+- `409` — email ya registrado
+- `400` — tipo de usuario inválido
+
+---
+
+### `PUT /api/admin/users/{id}/block`
+
+Bloquear un usuario (deshabilitar acceso).
+
+**Respuesta — `200 OK`:**
+```json
+{
+  "id": "5fb89bb6-...",
+  "email": "vendedor@test.com",
+  "nombre": "Vendedor Uno",
+  "tipo": "VENDEDOR",
+  "activo": false
+}
+```
+
+---
+
+### `PUT /api/admin/users/{id}/unblock`
+
+Desbloquear un usuario (habilitar acceso).
+
+**Respuesta — `200 OK`:**
+```json
+{
+  "id": "5fb89bb6-...",
+  "email": "vendedor@test.com",
+  "nombre": "Vendedor Uno",
+  "tipo": "VENDEDOR",
+  "activo": true
+}
+```
+
+---
+
+### `DELETE /api/admin/users/{id}`
+
+Eliminar un usuario permanentemente.
+
+**Respuesta — `204 No Content`**
+
+**Errores:**
+- `409` — no se puede eliminar la cuenta administradora por defecto (`admin@ecommerce.com`)
+
+---
+
 ## DTOs
 
 ### DireccionRequest
@@ -170,6 +379,27 @@ Authorization: Bearer <token>
   "codigoPostal": "string",
   "pais": "string",
   "principal": "boolean"
+}
+```
+
+### AdminUserRequest
+```json
+{
+  "email": "string (requerido)",
+  "password": "string (requerido, min 6)",
+  "nombre": "string (requerido)",
+  "tipo": "string (requerido: CLIENTE, VENDEDOR, ADMINISTRADOR)"
+}
+```
+
+### AdminUserResponse
+```json
+{
+  "id": "UUID",
+  "email": "string",
+  "nombre": "string",
+  "tipo": "string",
+  "activo": "boolean"
 }
 ```
 

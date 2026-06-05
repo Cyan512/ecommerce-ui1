@@ -15,6 +15,7 @@ export interface AuthContextType {
   isClient: boolean
   login: (res: AuthResponse) => void
   logout: () => void
+  updateUser: (user: User) => void
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)

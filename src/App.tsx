@@ -12,13 +12,16 @@ import CartPage from '@/features/cart/infrastructure/pages/CartPage'
 import WishlistPage from '@/features/wishlist/infrastructure/pages/WishlistPage'
 import MyOrdersPage from '@/features/orders/infrastructure/pages/MyOrdersPage'
 import OrderDetailPage from '@/features/orders/infrastructure/pages/OrderDetailPage'
+import CheckoutPage from '@/features/orders/infrastructure/pages/CheckoutPage'
 import DireccionesPage from '@/features/users/infrastructure/pages/DireccionesPage'
+import ProfilePage from '@/features/users/infrastructure/pages/ProfilePage'
 import AdminProductListPage from '@/features/products/infrastructure/pages/AdminProductListPage'
 import AdminProductFormPage from '@/features/products/infrastructure/pages/AdminProductFormPage'
 import AdminCategoryListPage from '@/features/categories/infrastructure/pages/AdminCategoryListPage'
 import AdminCategoryFormPage from '@/features/categories/infrastructure/pages/AdminCategoryFormPage'
 import AdminOrderListPage from '@/features/orders/infrastructure/pages/AdminOrderListPage'
 import AdminDashboardPage from '@/features/admin/infrastructure/pages/DashboardPage'
+import AdminUsersPage from '@/features/users/infrastructure/pages/AdminUsersPage'
 import { ClientGuard } from '@/core/infrastructure/auth/ClientGuard'
 
 function App() {
@@ -36,8 +39,10 @@ function App() {
             <Route path="/" element={<Navigate to="/products" replace />} />
             <Route path="/products" element={<ProductListPage />} />
             <Route path="/products/:id" element={<ProductDetailPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route element={<ClientGuard />}>
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/orders/new" element={<CheckoutPage />} />
               <Route path="/wishlist" element={<WishlistPage />} />
               <Route path="/orders" element={<MyOrdersPage />} />
               <Route path="/orders/:id" element={<OrderDetailPage />} />
@@ -54,6 +59,7 @@ function App() {
             <Route path="categories/new" element={<AdminCategoryFormPage />} />
             <Route path="categories/:id/edit" element={<AdminCategoryFormPage />} />
             <Route path="orders" element={<AdminOrderListPage />} />
+            <Route path="users" element={<AdminUsersPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/products" replace />} />
