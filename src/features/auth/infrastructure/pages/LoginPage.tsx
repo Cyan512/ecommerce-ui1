@@ -48,7 +48,7 @@ export default function LoginPage() {
           </div>
           <div className="mt-2 text-center">
             <a
-              href="http://localhost:8080/oauth2/authorization/google"
+              href={`${import.meta.env.VITE_API_URL ?? ''}/oauth2/authorization/google`}
               className="text-sm text-primary underline underline-offset-4"
             >
               Continuar con Google
